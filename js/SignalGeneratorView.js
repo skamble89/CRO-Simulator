@@ -13,16 +13,16 @@ var SignalGeneratorView = Backbone.View.extend({
 		var self = this;
 		switch(this.type){
 			case 'sine':
-				return function(){return self._sine.apply(self, arguments);};
+				return function(){return -self._sine.apply(self, arguments);};
 				break;
 			case 'ramp':
-				return function(){return self._ramp.apply(self, arguments);};
+				return function(){return -self._ramp.apply(self, arguments);};
 				break;
 			case 'square':
-				return function(){return self._square.apply(self, arguments);};
+				return function(){return -self._square.apply(self, arguments);};
 				break;
 			default:
-				return function(){return self._sine.apply(self, arguments);};
+				return function(){return -self._sine.apply(self, arguments);};
 				break;
 		}
 	},
