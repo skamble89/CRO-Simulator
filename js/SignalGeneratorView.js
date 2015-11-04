@@ -1,7 +1,7 @@
 var SignalGeneratorView = Backbone.View.extend({
 	initialize: function(options){
-		this.amplitude = 1;
-		this.frequency = 1;		
+		this.amplitude = options.amplitude || 1;
+		this.frequency = options.frequency || 1;		
 		this.type = 'sine';
 	},
 
@@ -10,19 +10,19 @@ var SignalGeneratorView = Backbone.View.extend({
 	},
 
 	getSignalFunction: function(){
-		var signal;
+		var self = this;
 		switch(this.type){
 			case 'sine':
-				return this._sine;
+				return function(){return self._sine.apply(self, arguments);};
 				break;
 			case 'ramp':
-				return this._ramp;
+				return function(){return self._ramp.apply(self, arguments);};
 				break;
 			case 'square':
-				return this._square;
+				return function(){return self._square.apply(self, arguments);};
 				break;
 			default:
-				return this._sine;
+				return function(){return self._sine.apply(self, arguments);};
 				break;
 		}
 	},
@@ -32,11 +32,11 @@ var SignalGeneratorView = Backbone.View.extend({
 	},
 
 	_ramp: function(t){
-		
+		return t;
 	},
 
 	_square: function(t){
-		
+		return this.amplitude;
 	}
 
 });

@@ -17,8 +17,10 @@
 	<script type="text/javascript" src="libs/underscore.js"></script>
 	<script type="text/javascript" src="libs/backbone-min.js"></script>
 	<script type="text/javascript" src="js/CROView.js"></script>
+	<script type="text/javascript" src="js/SignalGeneratorView.js"></script>
 	<script type="text/javascript">
-	new CROView({el:'#cro_container', scaleX:10, scaleY:10, channelA: function(t){return 10*Math.sin(t/3) + 8*Math.sin(t/4)}, channelB: function(t){return 8*Math.sin(t/4);}}).render()
+	var s = new SignalGeneratorView({amplitude:10});
+	new CROView({el:'#cro_container', scaleX:10, scaleY:10, channelA: s.getSignalFunction(), channelB: function(t){return 8*Math.sin(t/4);}}).render()
 	</script>
 </body>
 </html>
