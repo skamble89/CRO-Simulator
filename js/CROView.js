@@ -12,6 +12,8 @@ var CROView = Backbone.View.extend({
 		this.canvas = this.el.getElementsByTagName('canvas')[0];
 		this.context = this.canvas.getContext('2d');
 		this.context.strokeStyle = options.strokeStyle || 'green';
+		this.height = this.canvas.height;
+		this.width = this.canvas.width;
 
 		this.t = 0;
 
@@ -31,14 +33,14 @@ var CROView = Backbone.View.extend({
 	},
 
 	render: function(){
-		var self = this;
+		var self = this, w = self.width;
 		function draw(){			
-			for(var i = 0;i < self.canvas.width; i++){
+			for(var i = 0;i < w; i++){
 				var xy = self.getXY(self.t++);
-				self.context.lineTo(xy.x, xy.y);
-				self.context.stroke();
-			}			
-			setTimeout(draw, 1000);
+				self.context.lineTo(xy.x, xy.y);				
+			}
+			self.context.stroke();
+			setTimeout(draw, 60);
 		}
 		draw();
 		return this;
