@@ -12,6 +12,7 @@ var CROView = Backbone.View.extend({
 		this.canvas = this.el.getElementsByTagName('canvas')[0];
 		this.context = this.canvas.getContext('2d');
 		this.context.strokeStyle = options.strokeStyle || 'green';
+		this.context.lineWidth = options.lineWidth || '2';
 		this.height = this.canvas.height;
 		this.width = this.canvas.width;
 
@@ -34,9 +35,11 @@ var CROView = Backbone.View.extend({
 
 	render: function(){
 		var self = this, w = self.width;
-		function draw(){			
+		function draw(){	
+			self.context.clearRect(0, 0, self.width, self.height);
+			self.context.beginPath();		
 			for(var i = 0;i < w; i++){
-				var xy = self.getXY(self.t++);
+				var xy = self.getXY();
 				self.context.lineTo(xy.x, xy.y);				
 			}
 			self.context.stroke();
@@ -46,15 +49,16 @@ var CROView = Backbone.View.extend({
 		return this;
 	},
 
-	getXY: function(t){
+	getXY: function(){
+		var t = this.t++;
 		var obj = {};		
 		switch(this.selectedChannel){
 			case 'A':
-				obj.x = t;
+				obj.x = t%this.width;
 				obj.y = this.channelA(t/this.scaleX) * this.scaleY;
 				break;
 			case 'B':
-				obj.x = t;
+				obj.x = t%this.width;
 				obj.y = this.channelB(t/this.scaleX) * this.scaleY;
 				break;
 			case 'AB':
@@ -62,7 +66,7 @@ var CROView = Backbone.View.extend({
 				obj.y = this.channelB(t/this.scaleX) * this.scaleY;
 				break;
 			default:
-				obj.x = t;
+				obj.x = t%this.width;
 				obj.y = this.channelA(t/this.scaleX) * this.scaleY;
 		}
 		obj.x = obj.x + this.posX;
@@ -71,9 +75,7 @@ var CROView = Backbone.View.extend({
 		return obj;
 	},
 
-	setSelectedChannel: function(channel){
-		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		this.context.beginPath();
+	setSelectedChannel: function(channel){		
 		this.t = 0;
 		this.selectedChannel = channel;
 	},
